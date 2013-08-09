@@ -1,0 +1,41 @@
+{
+	"name": "string",
+	"gender": "char",
+	"gold": "int",
+
+	"shadow_stats": {
+		"health": "int",
+		"mana": "int",
+		"experience": "int",
+		"level": "int",
+
+		"strength": "int",
+		"agility": "int",
+		"endurance": "int",
+		"intelligence": "int",
+		"wisdom": "int",
+		"charism": "int",
+
+		"melee_attack": "int",
+		"range_attack": "int",
+		"defense": "int"
+	},
+
+	"light_stats": {
+
+	},
+
+	"gear": {
+		"headgear": "_id",
+		"gloves": "_id",
+		"arms": "_id",
+		"left_hand": "_id",
+		"right_hand": "_id",
+		"torso": "_id",
+		"legs": "_id",
+		"boots": "_id",
+		"jewelry": [
+			"_id", "_id", "_id", "_id"
+		]
+	}
+}

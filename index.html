@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Into the Shadow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/shadow.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script>
+      var counter = 0;
+
+      var uva_mangina = {
+        name: "Uva Mangina",
+        health: 20, 
+        attack: 50, 
+        defense: 5, 
+        speed: 6,
+        damage: 4
+      };
+
+      var goblin = {
+        name: "The Goblin",
+        health: 10,
+        attack: 40,
+        defense: 3,
+        speed: 7,
+        damage: 2
+      };
+
+      var Attack = function(attack, defense) {
+        if(Math.random() > (defense/attack)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+     /* var Combat = function(character, monster) {
+        log = $('.combat-log');
+        if (character.speed >= monster.speed) {
+          if(Attack(character.attack, monster.defense)){
+            monster.health = monster.health - character.damage;
+            log.prepend("Ouch! You just owned him for " 
+                        + character.damage + " damage!")
+          } else {
+            log.prepend("You suck! You totally whiffed.")
+          }
+          if(Attack(monster.attack, monster.defense)){
+            character.health = character.health - monster.damage;
+            log.prepend("Wow! You just got bitch slapped for " 
+                        + monster.damage + " damage!");
+          } else {
+            log.prepend("He tried to attack you, and it didn't go so well...")
+          }
+        } else {
+          if(Attack(monster.attack, monster.defense)){
+            character.health = character.health - monster.damage;
+            log.prepend("Wow! You just got bitch slapped for " 
+                        + monster.damage + " damage!");
+          } else {
+            log.prepend("He tried to attack you, and it didn't go so well...")
+          }
+          if(Attack(character.attack, monster.defense)){
+            monster.health = monster.health - character.damage;
+            log.prepend("Ouch! You just owned him for " 
+                        + character.damage + " damage!")
+          } else {
+            log.prepend("You suck! You totally whiffed.")
+          }
+        }
+      }; */
+
+      var loadProfile = function(element, profile) {
+        element.find('.name').html(profile.name);
+        element.find('.health').html(profile.health);
+        element.find('.attack').html(profile.attack);
+        element.find('.defense').html(profile.defense);
+        element.find('.speed').html(profile.speed);
+        element.find('.damage').html(profile.damage);
+      }
+      jQuery(function(){
+        loadProfile($('.character'), uva_mangina);
+        loadProfile($('.monster'), goblin);
+      });
+
+      $(document).ready(function() {
+        event.preventDefault();
+
+        $('#attack').on('click', function(){
+          log = $('.combat-log');
+          if (uva_mangina.speed >= goblin.speed) {
+            if(Attack(uva_mangina.attack, goblin.defense)){
+              goblin.health = goblin.health - uva_mangina.damage;
+              $('.monster').find('.health').html(goblin.health);
+              console.log(goblin.health);
+              log.prepend("<li>Ouch! You just owned him for " 
+                          + uva_mangina.damage + " damage!</li>")
+            } else {
+              log.prepend("<li>You suck! You totally whiffed.</li>")
+            }
+            if(Attack(goblin.attack, goblin.defense)){
+              uva_mangina.health = uva_mangina.health - goblin.damage;
+              $('.character').find('.health').html(uva_mangina.health);
+              console.log(uva_mangina.health);
+              log.prepend("<li>Wow! You just got bitch slapped for " 
+                          + goblin.damage + " damage!</li>");
+            } else {
+              log.prepend("<li>He tried to attack you, and it didn't go so well...</li>")
+            }
+          } else {
+            if(Attack(goblin.attack, goblin.defense)){
+              uva_mangina.health = uva_mangina.health - goblin.damage;
+              $('.character').find('.health').html(uva_mangina.health);
+              console.log(uva_mangina.health);
+              log.prepend("<li>Wow! You just got bitch slapped for " 
+                          + goblin.damage + " damage!</li>");
+            } else {
+              log.prepend("<li>He tried to attack you, and it didn't go so well...</li>")
+            }
+            if(Attack(uva_mangina.attack, goblin.defense)){
+              goblin.health = goblin.health - uva_mangina.damage;
+              $('.monster').find('.health').html(goblin.health);
+              console.log(goblin.health);
+              log.prepend("<li>Ouch! You just owned him for " 
+                          + uva_mangina.damage + " damage!</li>")
+            } else {
+              log.prepend("<li>You suck! You totally whiffed.</li>")
+            }
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="body-content">
+        <h1>Into the Shadow</h1>
+        <div class="row">
+          <div class="col-lg-3 character">
+            <table class="table table-bordered table-striped">
+              <h2>Character</h2>
+              <tr>
+                <td class="name"></td>
+              </tr>
+              <tr>
+                <td>Health</td><td class="health"></td>
+              </tr>
+              <tr>
+                <td>Attack</td><td class="attack"></td>
+              </tr>
+              <tr>
+                <td>Defense</td><td class="defense"></td>
+              </tr>
+              <tr>
+                <td>Speed</td><td class="speed"></td>
+              </tr>
+              <tr>
+                <td>Damage</td><td class="damage"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-lg-3 monster">
+            <table class="table table-bordered table-striped">
+              <h2>Monster</h2>
+              <tr>
+                <td class="name"></td>
+              </tr>
+              <tr>
+                <td>Health</td><td class="health"></td>
+              </tr>
+              <tr>
+                <td>Attack</td><td class="attack"></td>
+              </tr>
+              <tr>
+                <td>Defense</td><td class="defense"></td>
+              </tr>
+              <tr>
+                <td>Speed</td><td class="speed"></td>
+              </tr>
+              <tr>
+                <td>Damage</td><td class="damage"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <button id="attack" class="btn btn-warning btn-block">Attack!</button>
+            <h3>Combat Log</h3>
+            <ol class="combat-log" reversed></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+  </body>
+</html>
