@@ -10,8 +10,8 @@
     <script>
       var counter = 0;
 
-      var uva_mangina = {
-        name: "Uva Mangina",
+      var hero = {
+        name: "Hero",
         health: 20, 
         attack: 50, 
         defense: 5, 
@@ -79,8 +79,23 @@
         element.find('.speed').html(profile.speed);
         element.find('.damage').html(profile.damage);
       }
+
+      var CharacterDeath = function(character) {
+        if(character.health <= 0) {
+          event.preventDefault();
+          $('.info').hide('.combat-frame').html('<p>Oop! You just got your ass handed to you!</p>');
+        }
+      }
+
+      var MonsterDeath = function(monster) {
+        if(monster.health <= 0) {
+          event.preventDefault();
+          $('.info').hide('.combat-frame').html('<p>Well, that was easy!</p>');
+        }
+      }
+
       jQuery(function(){
-        loadProfile($('.character'), uva_mangina);
+        loadProfile($('.character'), hero);
         loadProfile($('.monster'), goblin);
       });
 
@@ -89,20 +104,22 @@
 
         $('#attack').on('click', function(){
           log = $('.combat-log');
-          if (uva_mangina.speed >= goblin.speed) {
-            if(Attack(uva_mangina.attack, goblin.defense)){
-              goblin.health = goblin.health - uva_mangina.damage;
+          if (hero.speed >= goblin.speed) {
+            if(Attack(hero.attack, goblin.defense)){
+              goblin.health = goblin.health - hero.damage;
               $('.monster').find('.health').html(goblin.health);
               console.log(goblin.health);
+              MonsterDeath(goblin);
               log.prepend("<li>Ouch! You just owned him for " 
-                          + uva_mangina.damage + " damage!</li>")
+                          + hero.damage + " damage!</li>")
             } else {
               log.prepend("<li>You suck! You totally whiffed.</li>")
             }
             if(Attack(goblin.attack, goblin.defense)){
-              uva_mangina.health = uva_mangina.health - goblin.damage;
-              $('.character').find('.health').html(uva_mangina.health);
-              console.log(uva_mangina.health);
+              hero.health = hero.health - goblin.damage;
+              $('.character').find('.health').html(hero.health);
+              console.log(hero.health);
+              CharacterDeath(hero);
               log.prepend("<li>Wow! You just got bitch slapped for " 
                           + goblin.damage + " damage!</li>");
             } else {
@@ -110,20 +127,22 @@
             }
           } else {
             if(Attack(goblin.attack, goblin.defense)){
-              uva_mangina.health = uva_mangina.health - goblin.damage;
-              $('.character').find('.health').html(uva_mangina.health);
-              console.log(uva_mangina.health);
+              hero.health = hero.health - goblin.damage;
+              $('.character').find('.health').html(hero.health);
+              console.log(hero.health);
+              CharacterDeath(hero);
               log.prepend("<li>Wow! You just got bitch slapped for " 
                           + goblin.damage + " damage!</li>");
             } else {
               log.prepend("<li>He tried to attack you, and it didn't go so well...</li>")
             }
-            if(Attack(uva_mangina.attack, goblin.defense)){
-              goblin.health = goblin.health - uva_mangina.damage;
+            if(Attack(hero.attack, goblin.defense)){
+              goblin.health = goblin.health - hero.damage;
               $('.monster').find('.health').html(goblin.health);
               console.log(goblin.health);
+              MonsterDeath(goblin);
               log.prepend("<li>Ouch! You just owned him for " 
-                          + uva_mangina.damage + " damage!</li>")
+                          + hero.damage + " damage!</li>")
             } else {
               log.prepend("<li>You suck! You totally whiffed.</li>")
             }
@@ -187,8 +206,12 @@
         <div class="row">
           <div class="col-lg-6">
             <button id="attack" class="btn btn-warning btn-block">Attack!</button>
-            <h3>Combat Log</h3>
-            <ol class="combat-log" reversed></ol>
+            <div class="info">
+              <div class="combat-frame">
+                <h3>Combat Log</h3>
+                <ol class="combat-log" reversed></ol>
+              </div>
+            </div>
           </div>
         </div>
       </div>
