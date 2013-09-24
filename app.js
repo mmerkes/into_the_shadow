@@ -5,7 +5,10 @@ var Monster = Backbone.Model.extend({
         health: '',
         defense: '',
         attack: '',
-        damage: ''
+        damage: '',
+        gold: 0,
+        xp: 0
+        //items: []
     },
     attackMonster: function() {
     	var newHealth = this.get('health') - 4;
@@ -17,12 +20,50 @@ var Monster = Backbone.Model.extend({
     }
 });
 
+var Booty = Backbone.Model.extend({
+	defaults: {
+		gold: 0,
+		xp: 0
+	},
+	addBooty: function(monster) {
+		var gold = this.get('gold') + monster.gold;
+		this.set({'gold': gold});
+		var xp = this.get('xp') + monster.xp;
+		this.set({'xp': xp});
+		if(monster.items) {
+			var item;
+			if (this.get('items') === undefined) {
+				items = [];
+			} else {
+				items = this.get('items');
+			}
+			if(Array.isArray(monster.items)) {
+				_.each(monster.items, function(item) {
+					items.push(item);
+				});
+			} else {
+				items.push(monster.items);
+			}	
+			this.set({'items': items});
+		}
+	}
+});
+
 // COLLECTION
 var Encounter = Backbone.Collection.extend({
     model: Monster,
     url: '/monsters',
+    booty: new Booty(),
     initialize: function() {
         this.on('remove', this.hideModel);
+        this.on('add', this.addBooty);
+        this.on('reset', this.initiateBooty);
+    },
+    addBooty: function(monster) {
+    	this.booty.addBooty(monster.toJSON());
+    },
+    initiateBooty: function() {
+    	this.models.forEach(this.addBooty, this);
     },
     hideModel: function(model) {
         model.trigger('fadeOut');
@@ -36,14 +77,14 @@ var Encounter = Backbone.Collection.extend({
 var encounter = new Encounter();
 
 var monsters = [
-    {name: 'Gobby', health: 10, defense: 10, attack: 5, damage: 4},
-    {name: 'Clobber', health: 15, defense: 10, attack: 7, damage: 4},
-    {name: 'Gumms', health: 9, defense: 10, attack: 5, damage: 2}
+    {name: 'Gobby', health: 10, defense: 10, attack: 5, damage: 4, gold: 2, xp: 4, items: 'car'},
+    {name: 'Clobber', health: 15, defense: 10, attack: 7, damage: 4, gold: 3, xp: 4, items: 'rock'},
+    {name: 'Gumms', health: 9, defense: 10, attack: 5, damage: 2, gold: 2, xp: 4, items: ['club', 'laser']}
 ];
 
 encounter.reset(monsters);
 
-// VIEW
+// VIEWS
 
 var MonsterView = Backbone.View.extend({
 	events: {
@@ -61,7 +102,6 @@ var MonsterView = Backbone.View.extend({
     initialize: function() {
         this.model.on('fadeOut', this.remove, this);
         this.model.on('change', this.render, this);
-        console.log(this.model);
     },
     attackMonster: function() {
     	this.model.attackMonster();
@@ -75,6 +115,22 @@ var MonsterView = Backbone.View.extend({
     }
 });
 
+var BootyView = Backbone.View.extend({
+	template: _.template(
+		"<h3>You've defeated the enemy! Here's what you got:</h3>" +
+		'<table class="table table-bordered">' +
+		'<tr><td>Gold</td><td><%= gold %></td>' +
+		'<td>XP</td><td><%= xp %></td></tr>' +
+		'<tr><td>Items</td><% _.each(items, function(item) { %>' +
+		'<td><%= item %></td><% }); %></tr>' +
+		'</table>'
+	),
+	render: function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	}
+});
+
 var EncounterView = Backbone.View.extend({
   	el: '#encounter',
     initialize: function() {
@@ -84,6 +140,8 @@ var EncounterView = Backbone.View.extend({
     },
     bootyView: function() {
     	console.log('Okay, the view knows it is over');
+    	var bootyView = new BootyView({model: this.collection.booty});
+    	this.$el.append(bootyView.render().el);
     },
     addOne: function(monster) {          
         var monsterView = new MonsterView({model: monster});
