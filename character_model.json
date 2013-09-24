@@ -18,11 +18,29 @@
 
 		"melee_attack": "int",
 		"range_attack": "int",
-		"defense": "int"
+		"defense": "int",
+		"speed": "int",
+		"damage": "int"
 	},
 
 	"light_stats": {
+		"health": "int",
+		"mana": "int",
+		"experience": "int",
+		"level": "int",
 
+		"strength": "int",
+		"agility": "int",
+		"endurance": "int",
+		"intelligence": "int",
+		"wisdom": "int",
+		"charism": "int",
+
+		"melee_attack": "int",
+		"range_attack": "int",
+		"defense": "int",
+		"speed": "int",
+		"damage": "int"
 	},
 
 	"gear": {

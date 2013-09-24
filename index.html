@@ -1,225 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Into the Shadow</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/shadow.css" rel="stylesheet">
-    <script src="js/jquery.js"></script>
-    <script>
-      var counter = 0;
-
-      var hero = {
-        name: "Hero",
-        health: 20, 
-        attack: 50, 
-        defense: 5, 
-        speed: 6,
-        damage: 4
-      };
-
-      var goblin = {
-        name: "The Goblin",
-        health: 10,
-        attack: 40,
-        defense: 3,
-        speed: 7,
-        damage: 2
-      };
-
-      var Attack = function(attack, defense) {
-        if(Math.random() > (defense/attack)) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-
-     /* var Combat = function(character, monster) {
-        log = $('.combat-log');
-        if (character.speed >= monster.speed) {
-          if(Attack(character.attack, monster.defense)){
-            monster.health = monster.health - character.damage;
-            log.prepend("Ouch! You just owned him for " 
-                        + character.damage + " damage!")
-          } else {
-            log.prepend("You suck! You totally whiffed.")
-          }
-          if(Attack(monster.attack, monster.defense)){
-            character.health = character.health - monster.damage;
-            log.prepend("Wow! You just got bitch slapped for " 
-                        + monster.damage + " damage!");
-          } else {
-            log.prepend("He tried to attack you, and it didn't go so well...")
-          }
-        } else {
-          if(Attack(monster.attack, monster.defense)){
-            character.health = character.health - monster.damage;
-            log.prepend("Wow! You just got bitch slapped for " 
-                        + monster.damage + " damage!");
-          } else {
-            log.prepend("He tried to attack you, and it didn't go so well...")
-          }
-          if(Attack(character.attack, monster.defense)){
-            monster.health = monster.health - character.damage;
-            log.prepend("Ouch! You just owned him for " 
-                        + character.damage + " damage!")
-          } else {
-            log.prepend("You suck! You totally whiffed.")
-          }
-        }
-      }; */
-
-      var loadProfile = function(element, profile) {
-        element.find('.name').html(profile.name);
-        element.find('.health').html(profile.health);
-        element.find('.attack').html(profile.attack);
-        element.find('.defense').html(profile.defense);
-        element.find('.speed').html(profile.speed);
-        element.find('.damage').html(profile.damage);
-      }
-
-      var CharacterDeath = function(character) {
-        if(character.health <= 0) {
-          event.preventDefault();
-          $('.info').hide('.combat-frame').html('<p>Oop! You just got your ass handed to you!</p>');
-        }
-      }
-
-      var MonsterDeath = function(monster) {
-        if(monster.health <= 0) {
-          event.preventDefault();
-          $('.info').hide('.combat-frame').html('<p>Well, that was easy!</p>');
-        }
-      }
-
-      jQuery(function(){
-        loadProfile($('.character'), hero);
-        loadProfile($('.monster'), goblin);
-      });
-
-      $(document).ready(function() {
-        event.preventDefault();
-
-        $('#attack').on('click', function(){
-          log = $('.combat-log');
-          if (hero.speed >= goblin.speed) {
-            if(Attack(hero.attack, goblin.defense)){
-              goblin.health = goblin.health - hero.damage;
-              $('.monster').find('.health').html(goblin.health);
-              console.log(goblin.health);
-              MonsterDeath(goblin);
-              log.prepend("<li>Ouch! You just owned him for " 
-                          + hero.damage + " damage!</li>")
-            } else {
-              log.prepend("<li>You suck! You totally whiffed.</li>")
-            }
-            if(Attack(goblin.attack, goblin.defense)){
-              hero.health = hero.health - goblin.damage;
-              $('.character').find('.health').html(hero.health);
-              console.log(hero.health);
-              CharacterDeath(hero);
-              log.prepend("<li>Wow! You just got bitch slapped for " 
-                          + goblin.damage + " damage!</li>");
-            } else {
-              log.prepend("<li>He tried to attack you, and it didn't go so well...</li>")
-            }
-          } else {
-            if(Attack(goblin.attack, goblin.defense)){
-              hero.health = hero.health - goblin.damage;
-              $('.character').find('.health').html(hero.health);
-              console.log(hero.health);
-              CharacterDeath(hero);
-              log.prepend("<li>Wow! You just got bitch slapped for " 
-                          + goblin.damage + " damage!</li>");
-            } else {
-              log.prepend("<li>He tried to attack you, and it didn't go so well...</li>")
-            }
-            if(Attack(hero.attack, goblin.defense)){
-              goblin.health = goblin.health - hero.damage;
-              $('.monster').find('.health').html(goblin.health);
-              console.log(goblin.health);
-              MonsterDeath(goblin);
-              log.prepend("<li>Ouch! You just owned him for " 
-                          + hero.damage + " damage!</li>")
-            } else {
-              log.prepend("<li>You suck! You totally whiffed.</li>")
-            }
-          }
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="body-content">
-        <h1>Into the Shadow</h1>
-        <div class="row">
-          <div class="col-lg-3 character">
-            <table class="table table-bordered table-striped">
-              <h2>Character</h2>
-              <tr>
-                <td class="name"></td>
-              </tr>
-              <tr>
-                <td>Health</td><td class="health"></td>
-              </tr>
-              <tr>
-                <td>Attack</td><td class="attack"></td>
-              </tr>
-              <tr>
-                <td>Defense</td><td class="defense"></td>
-              </tr>
-              <tr>
-                <td>Speed</td><td class="speed"></td>
-              </tr>
-              <tr>
-                <td>Damage</td><td class="damage"></td>
-              </tr>
-            </table>
-          </div>
-          <div class="col-lg-3 monster">
-            <table class="table table-bordered table-striped">
-              <h2>Monster</h2>
-              <tr>
-                <td class="name"></td>
-              </tr>
-              <tr>
-                <td>Health</td><td class="health"></td>
-              </tr>
-              <tr>
-                <td>Attack</td><td class="attack"></td>
-              </tr>
-              <tr>
-                <td>Defense</td><td class="defense"></td>
-              </tr>
-              <tr>
-                <td>Speed</td><td class="speed"></td>
-              </tr>
-              <tr>
-                <td>Damage</td><td class="damage"></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <button id="attack" class="btn btn-warning btn-block">Attack!</button>
-            <div class="info">
-              <div class="combat-frame">
-                <h3>Combat Log</h3>
-                <ol class="combat-log" reversed></ol>
-              </div>
-            </div>
-          </div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <script src="js/jquery.js"></script>
+  <script src="js/underscore.js"></script>
+  <script src="js/backbone.js"></script>
+  <meta charset="utf-8" />
+  <title>Into the Darkness</title>
+</head>
+<body>
+  <div class="container">
+    <div class="body-content">
+      <div class="row">
+        <div class="col-lg-4">
+          <h1>The Monsters!</h1>
+          <div id="encounter"></div>
         </div>
       </div>
     </div>
-
-    <!-- JavaScript plugins (requires jQuery) -->
-    <script src="js/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.js"></script>
-  </body>
+  </div>
+<script src="app.js"></script>
+</body>
 </html>
