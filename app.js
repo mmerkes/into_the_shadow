@@ -49,6 +49,26 @@ var Booty = Backbone.Model.extend({
 	}
 });
 
+var Character = Backbone.Model.extend({
+	defaults: {
+		name: 'The unnamed one',
+		level: 1,
+		xp: 0,
+		gold: 0,
+		health: 0,
+		mana: 0,
+		attack: 0,
+		defense: 0,
+		speed: 0,
+		damage: 0
+	}
+});
+
+var character = new Character({
+	name: 'The One', level: 1, xp: 50, gold: 20, health: 20,
+	mana: 10,attack: 10, defense: 8, speed: 4, damage: 6
+});
+
 // COLLECTION
 var Encounter = Backbone.Collection.extend({
     model: Monster,
@@ -155,6 +175,33 @@ var EncounterView = Backbone.View.extend({
     }
 });
 
+var CharacterView = Backbone.View.extend({
+	el: '#character',
+	template: _.template(
+		'<h3><%= name %></h3>' +
+		'<table class="table table-bordered">' +
+	  	'<tr><td>Level</td><td> <%= level %> </td></tr>' +
+	   	'<tr><td>XP</td><td> <%= xp %> </td>' +
+	    '<td>Gold</td><td> <%= gold %> </td></tr>' +
+	  	'<tr><td>Health</td><td> <%= health %> </td>' +
+	    '<td>Mana</td><td> <%= mana %> </td></tr>' +
+	  	'<tr><td>Attack</td><td> <%= attack %> </td>' +
+	    '<td>Defense</td><td> <%= defense %> </td></tr>' +
+	  	'<tr><td>Speed</td><td> <%= speed %> </td>' + 
+	    '<td>Damage</td><td> <%= damage %> </td></tr>' +
+		'</table>'
+	),
+	initialize: function() {
+		this.model.on('change', this.render, this);
+	},
+	render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+    }
+});
+
+var characterView = new CharacterView({model: character});
+characterView.render();
 var encounterView = new EncounterView({collection: encounter});
 encounterView.render();
 
