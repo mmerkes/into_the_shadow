@@ -195,6 +195,9 @@ var CharacterView = Backbone.View.extend({
 	initialize: function() {
 		this.model.on('change', this.render, this);
 	},
+	enterAttack: function() {
+		this.$el.find('.attack').hide();
+	},
 	render: function(){
         this.$el.html(this.template(this.model.toJSON()));
         return this;
@@ -204,13 +207,19 @@ var CharacterView = Backbone.View.extend({
 var Controller = Backbone.View.extend({
 	//pass a CharacterView in
 	//pass an EncounterView in
+	//Create a mixin called Combat with all of the combat functions
 	initialize: function() {
 		this.characterView = new CharacterView({model: character});
 		this.encounterView = new EncounterView({collection: encounter});
-		$(this.characterView.el).on('click', '.attack', this.charAttack);
+		this.characterView.$el.on('click', '.attack', this.charAttack);
 	},
 	charAttack: function() {
-		
+		//hide the character attack button
+		//this.characterView.enterAttack();
+		console.log(this.characterView);
+		//show the cancel button
+		//show the attack button for each monster
+		//listen for clicking, trigger methods to do damage
 	},
 	render: function() {
 		this.encounterView.render();
