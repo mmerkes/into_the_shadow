@@ -116,7 +116,7 @@ var MonsterView = Backbone.View.extend({
         '<td>Defense</td><td><%= defense %></td></tr>' +
         '<tr><td>Attack</td><td><%= attack %></td>' +
         '<td>Damage</td><td><%= damage %></td><tr>' +
-        '<tr><td><button type="button" class="btn btn-danger">Attack!</button></td></tr>' +
+        '<tr><td><button type="button" class="btn btn-danger hidden">Attack!</button></td></tr>' +
         '</table>'
         ),
     initialize: function() {
@@ -189,7 +189,8 @@ var CharacterView = Backbone.View.extend({
 	    '<td>Defense</td><td> <%= defense %> </td></tr>' +
 	  	'<tr><td>Speed</td><td> <%= speed %> </td>' + 
 	    '<td>Damage</td><td> <%= damage %> </td></tr>' +
-		'</table>'
+		'</table>' +
+		'<button class="btn btn-danger attack">Attack!</button>'
 	),
 	initialize: function() {
 		this.model.on('change', this.render, this);
@@ -200,10 +201,28 @@ var CharacterView = Backbone.View.extend({
     }
 });
 
-var characterView = new CharacterView({model: character});
-characterView.render();
-var encounterView = new EncounterView({collection: encounter});
-encounterView.render();
+var Controller = Backbone.View.extend({
+	//pass a CharacterView in
+	//pass an EncounterView in
+	initialize: function() {
+		this.characterView = new CharacterView({model: character});
+		this.encounterView = new EncounterView({collection: encounter});
+		$(this.characterView.el).on('click', '.attack', this.charAttack);
+	},
+	charAttack: function() {
+		
+	},
+	render: function() {
+		this.encounterView.render();
+		this.characterView.render();
+		console.log(this.characterView.model.toJSON());
+	}
+});
+
+var controller = new Controller();
+controller.render();
+
+
 
 
 
